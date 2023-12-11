@@ -40,12 +40,16 @@ class User(db.Model):
     
     def __repr__(self):
         return f'<User {self.name}>'
+    
+    def __repr__(self):
+        return f'<User {self.email}>'
 
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name, 
             "employee_id": self.employee_id,
+            "email": self.email,
         }
 
 class Shift(db.Model):
