@@ -1,4 +1,14 @@
 from flask import jsonify, url_for
+from api.models import User, db
+from sqlalchemy import asc
+
+
+def recalculate_seniority():
+    users = User.query.order_by(asc(User.hire_date), asc(User.birthday)).all()
+    for index, user in enumerate(users):
+        user.seniority = index + 1  # Assuming seniority starts at 1
+    db.session.commit()
+
 
 class APIException(Exception):
     status_code = 400
