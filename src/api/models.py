@@ -15,7 +15,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
     hire_date = db.Column(db.DateTime, nullable=False)
     birthday = db.Column(db.DateTime, nullable=False)
-    seniority = db.Column(db.Integer, nullable=False)
+    seniority = db.Column(db.Integer, nullable=True, default=0)
     # is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     assigned_shift_id = db.Column(db.Integer, db.ForeignKey('shift.id'))
 

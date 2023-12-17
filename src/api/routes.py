@@ -8,7 +8,7 @@ import hashlib
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
-import datetime
+from datetime import datetime
 
 
 
@@ -62,7 +62,8 @@ def register_account():
         name=name,
         password_hash=hashed_password,
         hire_date=hire_date,
-        birthday=birthday
+        birthday=birthday,
+        seniority=0
     )
     db.session.add(new_user)
     db.session.commit()
@@ -85,10 +86,12 @@ def login():
 
     # Basic validation
     if not employee_id or not password:
-        raise APIException('Missing employee_id or password', status_code=400)
+        return jsonify({"message": "Missing employee_id or password"}), 400
 
-    # Fetch user from the database
     user = User.query.filter_by(employee_id=employee_id).first()
+    if user is None or not check_password_hash(user.password_hash, password):
+        return jsonify({"message": "Invalid credentials"}), 401
+
 
     # User exists and password check
     if user and check_password_hash(user.password_hash, password):
