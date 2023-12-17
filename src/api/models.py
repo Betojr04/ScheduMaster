@@ -35,21 +35,7 @@ class User(db.Model):
         return access_token
 
     def __repr__(self):
-        return f'<User {self.employee_id}>'
-    
-    def __repr__(self):
-        return f'<User {self.name}>'
-    
-    def __repr__(self):
-        return f'<User {self.email}>'
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name, 
-            "employee_id": self.employee_id,
-            "email": self.email,
-        }
+        return f'<User {self.id}, {self.name}, {self.email}, {self.employee_id}>'
 
 class Shift(db.Model):
     id = db.Column(db.Integer, primary_key=True)

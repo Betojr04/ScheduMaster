@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { generateShifts } from "./ShiftUtils";
 
 const ShiftSelect = ({ selectedShift, handleShiftChange, shifts }) => {
   return (
@@ -28,7 +29,7 @@ const ShiftSelect = ({ selectedShift, handleShiftChange, shifts }) => {
 };
 
 ShiftSelect.propTypes = {
-  selectedShift: PropTypes.string.isRequired,
+  selectedShift: PropTypes.number.isRequired,
   handleShiftChange: PropTypes.func.isRequired,
   shifts: PropTypes.array.isRequired,
 };

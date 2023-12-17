@@ -2,10 +2,10 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Bid
 from api.utils import generate_sitemap, APIException, recalculate_seniority
 import hashlib
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 import datetime
@@ -97,3 +97,29 @@ def login():
         return jsonify({"token": access_token, "user_id": user.id}), 200
     else:
         raise APIException('Invalid credentials', status_code=401) 
+
+"""
+ROUTE FOR SUBMITTING SHIFT BID CHOICES
+"""
+@api.route('/submitShiftBid', methods=['POST'])
+@jwt_required()
+def submit_shift_bid():
+    current_user_id = get_jwt_identity()
+    bids = request.json.get("bids", [])
+
+    if not bids:
+        raise APIException('No bid data provided', status_code=400)
+
+    try:
+        for shift_id in bids:
+            new_bid = Bid(
+                user_id=current_user_id,
+                shift_id=shift_id,
+                bid=1 
+            )
+            db.session.add(new_bid)
+        db.session.commit()
+        return jsonify({"message": "Shift bids submitted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        raise APIException(str(e), status_code=500)
