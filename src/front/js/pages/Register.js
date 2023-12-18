@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import "../../styles/Register.css";
 
@@ -9,26 +10,25 @@ export const Register = () => {
   const [password, setPassword] = useState("");
   const [hireDate, setHireDate] = useState("");
   const [birthday, setBirthday] = useState("");
-  // const [seniority, setSeniority] = useState(0);
+  const navigate = useNavigate();
+  const { store, actions } = useContext(Context);
 
-  const { actions } = useContext(Context);
+  useEffect(() => {
+    if (store.registerSuccess) {
+      navigate("/login");
+    }
+  }, [store.registerSuccess, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    actions.registerUser(
-      {
-        name,
-        employee_id: employeeId,
-        email,
-        password,
-        hire_date: hireDate,
-        birthday,
-        // seniority,
-      },
-      () => {
-        window.location.href = "/login";
-      }
-    );
+    actions.registerUser({
+      name,
+      employee_id: employeeId,
+      email,
+      password,
+      hire_date: hireDate,
+      birthday,
+    });
   };
 
   return (

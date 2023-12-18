@@ -38,17 +38,19 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
 
-          if (!response.ok) {
+          if (response.ok) {
+            setStore({ registerSuccess: true, registerError: null });
+          } else {
             const errorData = await response.json();
             console.error("Registration error:", errorData);
             setStore({
-              registerError:
-                errorData.message || "Registration failed. Please try again.",
+              registerSuccess: false,
+              registerError: errorData.message,
             });
           }
         } catch (error) {
           console.error("Error during registration:", error);
-          setStore({ registerError: error.message });
+          setStore({ registerSuccess: false, registerError: error.message });
         }
       },
       /**

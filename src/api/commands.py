@@ -1,6 +1,7 @@
 
 import click
 from api.models import db, User
+import datetime
 
 """
 In this file, you can add as many commands as you want using the @app.cli.command decorator
@@ -14,20 +15,27 @@ def setup_commands(app):
     by typing: $ flask insert-test-users 5
     Note: 5 is the number of users to add
     """
-    @app.cli.command("insert-test-users") # name of our command
-    @click.argument("count") # argument of out command
+    @app.cli.command("insert-test-users")
+    @click.argument("count")
     def insert_test_users(count):
         print("Creating test users")
         for x in range(1, int(count) + 1):
             user = User()
+            user.employee_id = "EMP" + str(x)  # Adjust as needed
             user.email = "test_user" + str(x) + "@test.com"
+            user.name = "Test User " + str(x)
             user.password = "123456"
-            user.is_active = True
+            user.hire_date = datetime.now()
+            user.birthday = datetime.now()
+            user.seniority = x
+            user.assigned_shift_id = None  # You can set the assigned shift as needed
+
             db.session.add(user)
             db.session.commit()
             print("User: ", user.email, " created.")
 
         print("All test users created")
+
 
     @app.cli.command("insert-test-data")
     def insert_test_data():

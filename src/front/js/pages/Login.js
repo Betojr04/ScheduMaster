@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Login.css";
@@ -9,13 +9,15 @@ export const Login = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (store.isAuthenticated) {
+      navigate("/shiftpage"); // Update with your correct route
+    }
+  }, [store.isAuthenticated, navigate]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     actions.loginUser({ employee_id: employeeId, password });
-    if (store.isAuthenticated) {
-      navigate("/shiftpage");
-    }
-    // Handle actions after login like storing JWT token or redirecting
   };
 
   return (
