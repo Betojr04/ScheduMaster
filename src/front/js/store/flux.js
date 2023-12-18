@@ -75,7 +75,10 @@ const getState = ({ getStore, getActions, setStore }) => {
               loginError: null,
             });
           } else {
-            setStore({ loginError: "Invalid credentials. Please try again." });
+            setStore({
+              isAuthenticated: false,
+              loginError: "Invalid credentials. Please try again.",
+            });
           }
         } catch (error) {
           console.error("Error during login:", error);

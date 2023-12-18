@@ -1,16 +1,20 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 import "../../styles/Login.css";
 
 export const Login = () => {
   const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
-  const { actions } = useContext(Context);
+  const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     actions.loginUser({ employee_id: employeeId, password });
-
+    if (store.isAuthenticated) {
+      navigate("/shiftpage");
+    }
     // Handle actions after login like storing JWT token or redirecting
   };
 
