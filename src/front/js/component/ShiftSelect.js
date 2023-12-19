@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
-import { generateShifts } from "./ShiftUtils";
+
 
 const ShiftSelect = ({ selectedShift, handleShiftChange, shifts }) => {
   return (

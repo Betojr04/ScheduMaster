@@ -1,23 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import ShiftBidForm from "../component/ShiftBidForm";
 
 export const ShiftPage = () => {
-  const { store } = useContext(Context);
+  const { store, actions } = useContext(Context);
   const seniority = store.userData?.seniority;
 
+  useEffect(() => {
+    if (!store.userData) {
+    }
+  }, [store.userData]);
+
   const handleSubmit = async (selectedShifts) => {
-    // Ensure that actions and seniority are defined
-    if (actions && seniority) {
-      try {
-        await actions.submitShiftBid(selectedShifts);
-        // Handle success, e.g., show a message
-      } catch (error) {
-        // Handle errors, e.g., show an error message
-        console.error("Error submitting shift bids:", error);
-      }
+    try {
+      await actions.submitShiftBid(selectedShifts);
+    } catch (error) {
+      console.error("Error submitting shift bids:", error);
     }
   };
+
+  if (typeof seniority === "undefined") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main>
